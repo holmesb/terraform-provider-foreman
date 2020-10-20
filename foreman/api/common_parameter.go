@@ -25,8 +25,9 @@ type ForemanCommonParameter struct {
 	ForemanObject
 
 	// The CommonParameter we actually send
-	Name  string `json:"name"`
-	Value string `json:"value"`
+	Name      string `json:"name"`
+	Value     string `json:"value"`
+	ValueType string `json:"value_type"`
 }
 
 // -----------------------------------------------------------------------------

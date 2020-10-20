@@ -43,6 +43,22 @@ func resourceForemanCommonParameter() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+			"value_type": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "string",
+				Description: "Optionally specify the data type Foreman is to expect in `value`",
+				ValidateFunc: validation.StringInSlice([]string{
+					"string",
+					"boolean",
+					"integer",
+					"real",
+					"array",
+					"hash",
+					"yaml",
+					"json",
+				}, false),
+			},
 		},
 	}
 }
@@ -72,6 +88,9 @@ func buildForemanCommonParameter(d *schema.ResourceData) *api.ForemanCommonParam
 	if attr, ok = d.GetOk("value"); ok {
 		common_parameter.Value = attr.(string)
 	}
+	if attr, ok = d.GetOk("value_type"); ok {
+		common_parameter.ValueType = attr.(string)
+	}
 	return &common_parameter
 }
 
@@ -83,6 +102,7 @@ func setResourceDataFromForemanCommonParameter(d *schema.ResourceData, fd *api.F
 	d.SetId(strconv.Itoa(fd.Id))
 	d.Set("name", fd.Name)
 	d.Set("value", fd.Value)
+	d.Set("value_type", fd.ValueType)
 }
 
 // -----------------------------------------------------------------------------
